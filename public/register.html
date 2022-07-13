@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Register</title>
+        <link rel="stylesheet" href="../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+        <script src="../node_modules/jquery/dist/jquery.js"></script>
+        <script>
+            $(function() {
+                $("#UserName").keyup(function() {
+                    $.ajax({
+                        method:"GET",
+                        url:"http://localhost:5000/getusers",
+                        success:function(data) {
+                            for(var user of data) {
+                                if(user.UserName==$("#UserName").val()) {
+                                    $("#UserError").html("User Name Taken-Try Another").css("color","red");
+                                    break;
+                                }else {
+                                    $("#UserError").html("User Name Available").css("color","green");
+                                }
+                            }
+                        }
+                    })
+                })
+                $("#btnRegister").click(function() {
+                    var userdetails={
+                        UserName:$("#UserName").val(),
+                        Password:$("#Password").val(),
+                        Email:$("#Email").val(),
+                        Mobile:$("#Mobile").val(),
+                        City:$("#City").val(),
+                        State:$("#State").val(),
+                        Postal:$("#Postal").val(),
+                        Address:$("#Address").val(),
+                        Payment:$("#Payment").val()
+                    };
+                    $.ajax({
+                        method:'POST',
+                        url:'http://127.0.0.1:5000/registeruser',
+                        data:userdetails,
+                    })
+                    alert("Registered Successfully");
+                    location.href="login.html";
+                })
+            })
+        </script>
+    </head>
+    <body class="container">
+        <h2>Register</h2>
+        <dl>
+            <dt>UserName</dt>
+            <dd><input type="text" id="UserName"></dd>
+            <dd id="UserError"></dd>
+            <dt>Mobile</dt>
+            <dd><input type="text" id="Mobile"></dd>
+            <dt>Email</dt>
+            <dd><input type="email" id="Email"></dd>
+            <dt>Password</dt>
+            <dd><input type="password" id="Password"></dd>
+            <dt>City</dt>
+            <dd>
+                <select id="City">
+                    <option>Hyd</option>
+                    <option>Delhi</option>
+                    <option>London</option>
+                </select>
+            </dd>
+            <dt>State</dt>
+            <dd><input type="text" id="State"></dd>
+            <dt>Postal</dt>
+            <dd><input type="text" id="Postal"></dd>
+            <dt>Address</dt>
+            <dd><input type="text" id="Address"></dd>
+            <dt>Payment</dt>
+            <dd>
+                <select id="Payment">
+                    <option>UPI</option>
+                    <option>Cash</option>
+                    <option>Credit Card</option>
+                </select>
+            </dd>
+        </dl>
+        <button id="btnRegister" class="btn btn-primary">Register</button>
+        <br><br>
+        <a href="login.html">Already Have Account?</a>
+    </body>
+</html>

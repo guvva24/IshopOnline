@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <script src="../node_modules/jquery/dist/jquery.js"></script>
+        <script src="../node_modules/jquery.cookie/jquery.cookie.js"></script>
+        <script>
+            $(function() {
+                $("button").click(function() {
+                    $.ajax({
+                        method:"GET",
+                        url:"http://localhost:5000/getusers",
+                        success:function(data) {
+                            for(var user of data) {
+                                if(user.UserName==$("#username").val()&&user.Password==$("#password").val()) {
+                                    $.cookie("username",$("#username").val());
+                                    location.href="shopping.html";
+                                }else {
+                                    $("#error").html("Invalid UserName/Password");
+                                }
+                            }
+                        }
+                    })
+                })
+            })
+        </script>
+    </head>
+    <body>
+        <div>
+            <dl>
+                <dt>UserName</dt>
+                <dd><input type="text" id="username"></dd>
+                <dt>Password</dt>
+                <dd><input type="password" id="password"></dd>
+            </dl>
+            <button>Login</button>
+        </div>
+    </body>
+</html>
